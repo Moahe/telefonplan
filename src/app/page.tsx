@@ -9,6 +9,7 @@ const apiKey = process.env.SL_API_KEY;
 function formatTime(timeString: string) {
   const date = new Date(timeString);
   const formattedTime = date.toLocaleTimeString("sv-SE", {
+    timeZone: "Europe/Stockholm",
     hour12: false,
     hour: "numeric",
     minute: "numeric",
@@ -27,13 +28,13 @@ export default async function Home() {
       )
         .then((response) => {
           if (!response.ok) {
-            //throw new Error("Network response was not ok");
+            console.log("Network response was not ok");
           }
-
           return response.json();
         })
         .then((data) => {
-          return data.ResponseData.Metros;
+          console.log("RESPONSE", data.ResponseData.Metros.length);
+          return data.ResponseData;
         })
         .catch((error) => {
           console.log("Error fetching data:", error.message);
@@ -46,8 +47,13 @@ export default async function Home() {
     <main className={styles.main}>
       <div className={styles.description}>
         <h1>Train Times</h1>
-        <p>Updated: {formatTime(currentTime)}</p>
-        <TrainTimes trainTimes={trainTimes} />
+        <p>
+          Updated:{" "}
+          {trainTimes.Metros.length === 0
+            ? formatTime(currentTime)
+            : formatTime(trainTimes.LatestUpdate)}
+        </p>
+        <TrainTimes trainTimes={trainTimes.Metros} />
       </div>
     </main>
   );

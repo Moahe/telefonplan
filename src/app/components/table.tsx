@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { startTransition, useEffect } from "react";
+import React, { startTransition, useEffect } from "react";
 
 interface TrainTimes {
   trainTimes: TrainTime[];
@@ -38,11 +38,21 @@ function formatTime(timeString: string) {
 
 export default function TrainTimes(trainTimes: TrainTimes) {
   const router = useRouter();
-  const trainTime = trainTimes.trainTimes;
+  const [trainTime, setTrainTime] = React.useState<TrainTime[]>(
+    trainTimes.trainTimes
+  );
   const morbyCentrumTrainTimes = trainTime.filter(
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
   const currentTime = new Date().toUTCString();
+
+  useEffect(() => {
+    if (trainTimes.trainTimes.length === 0) {
+      return;
+    }
+
+    setTrainTime(trainTimes.trainTimes);
+  }, [trainTimes]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,8 +60,6 @@ export default function TrainTimes(trainTimes: TrainTimes) {
     }, 30000);
     return () => clearInterval(interval);
   }, [router]);
-
-  console.log("trainTimes", trainTimes);
 
   return (
     <div>
@@ -74,7 +82,7 @@ export default function TrainTimes(trainTimes: TrainTimes) {
               </p>
               <p style={bodyStyle}>
                 <span style={{ fontWeight: "300", color: "gray" }}>
-                  Excepted time:
+                  Expected time:
                 </span>{" "}
                 {formatTime(train.ExpectedDateTime)}
               </p>
