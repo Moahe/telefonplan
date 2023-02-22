@@ -51,9 +51,10 @@ export default function TrainTimes(trainTimes: TrainTimes) {
     return () => clearInterval(interval);
   }, [router]);
 
+  console.log("trainTimes", trainTimes);
+
   return (
     <div>
-      <h2>Train Times {formatTime(currentTime)}</h2>
       {trainTimes.length && trainTimes.length < 2 ? (
         <p>No trains</p>
       ) : (
