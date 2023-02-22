@@ -5,7 +5,7 @@ import { startTransition, useEffect } from "react";
 
 interface TrainTimes {
   trainTimes: TrainTime[];
-  length: number;
+  length?: number;
 }
 
 interface TrainTime {
@@ -54,7 +54,7 @@ export default function TrainTimes(trainTimes: TrainTimes) {
   return (
     <div>
       <h2>Train Times {formatTime(currentTime)}</h2>
-      {trainTimes.length < 2 ? (
+      {trainTimes.length && trainTimes.length < 2 ? (
         <p>No trains</p>
       ) : (
         <ul style={listStyle}>
@@ -96,7 +96,6 @@ const listItemStyle = {
   borderRadius: "5px",
 };
 const headerStyle = {
-  textTransform: "capitalize",
   marginBottom: "5px",
   fontWeight: "bold",
   border: "1px solid transparent",
