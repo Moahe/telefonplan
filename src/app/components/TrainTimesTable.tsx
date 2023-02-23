@@ -56,8 +56,6 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
 
-  console.log("trainTimes", trainTimes);
-
   useEffect(() => {
     if (trainTimes.length === 0) {
       return;
