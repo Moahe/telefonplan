@@ -75,11 +75,11 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   // Define a function to play the sound when a list item is clicked
   const handleClick = () => {
     if (playSong) {
-      audio?.pause();
+      //audio?.pause();
       setPlaySong(false);
     } else {
       setPlaySong(true);
-      audio?.play();
+      //audio?.play();
     }
   };
 
