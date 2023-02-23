@@ -21,7 +21,7 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          console.log("RESPONSE", data.ResponseData);
+          //console.log("RESPONSE", data.ResponseData);
           return data.ResponseData;
         })
         .catch((error) => {
