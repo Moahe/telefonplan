@@ -6,9 +6,11 @@ import styles from "./page.module.css";
 // Define the audio file you want to play
 const audioFile = "https://telefonplan.vercel.app/song1.mp3";
 
-// Define a new Audio object to play the sound
-//const audio = new Audio(audioFile);
+//const audio = new Audio("/song1");
 
+//import audioFile from "../../../public/song1.mp3";
+
+// Define a new Audio object to play the sound
 //const audio = "";
 
 interface TrainTimesResult {
@@ -85,6 +87,9 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   return (
     <div>
+      <audio src="/music/song1.mp3" controls>
+        The file
+      </audio>
       {trainTime?.Metros.length ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
