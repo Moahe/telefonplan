@@ -1,12 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
 // Define the audio file you want to play
 const audioFile = "https://telefonplan.vercel.app/song1.mp3";
-
-//const audio = new Audio("/song1");
 
 //import audioFile from "../../../public/song1.mp3";
 
@@ -60,6 +58,13 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
 
+  const audio = useRef<HTMLAudioElement | undefined>();
+
+  useEffect(() => {
+    audio.current =
+      typeof Audio !== undefined ? new Audio("/music/song1.mp3") : undefined;
+  }, []);
+
   useEffect(() => {
     if (trainTimes.length === 0) {
       return;
@@ -77,17 +82,17 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   // Define a function to play the sound when a list item is clicked
   const handleClick = () => {
     if (playSong) {
-      //audio?.pause();
+      audio.current?.pause();
       setPlaySong(false);
     } else {
       setPlaySong(true);
-      //audio?.play();
+      audio.current?.play();
     }
   };
 
   return (
     <div>
-      <audio src="/music/song1.mp3" controls>
+      <audio src="/music/song1.mp3" controls autoPlay={playSong}>
         The file
       </audio>
       {trainTime?.Metros.length ? (
