@@ -7,7 +7,7 @@ import styles from "./page.module.css";
 const audioFile = "https://telefonplan.vercel.app/song1.mp3";
 
 // Define a new Audio object to play the sound
-const audio = new Audio(audioFile);
+//const audio = new Audio(audioFile);
 
 //const audio = "";
 
