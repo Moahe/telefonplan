@@ -35,12 +35,6 @@ export default async function Home() {
     <main className={styles.main}>
       <div className={styles.description}>
         <h1>Train Times</h1>
-        {/* <p>
-          Updated:{" "}
-          {trainTimes.Metros.length === 0
-            ? ""
-            : formatTime(trainTimes.LatestUpdate)}
-        </p> */}
         <TrainTimes
           trainTimes={{
             LatestUpdate: trainTimes.LatestUpdate,

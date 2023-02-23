@@ -42,21 +42,21 @@ function formatTime(timeString: string) {
   return formattedTime;
 }
 
-export default function TrainTimes(trainTimes: TrainTimesResult) {
+export default function TrainTimes(trainTimesParam: TrainTimesResult) {
   const router = useRouter();
   const [trainTime, setTrainTime] = React.useState<TrainTimes>(
-    trainTimes.trainTimes
+    trainTimesParam.trainTimes
   );
   const morbyCentrumTrainTimes = trainTime?.Metros.filter(
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
 
   useEffect(() => {
-    if (trainTimes.trainTimes.length === 0) {
+    if (trainTimesParam.trainTimes.length === 0) {
       return;
     }
-    setTrainTime(trainTimes.trainTimes);
-  }, [trainTimes]);
+    setTrainTime(trainTimesParam.trainTimes);
+  }, [trainTimesParam]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,38 +67,46 @@ export default function TrainTimes(trainTimes: TrainTimesResult) {
 
   return (
     <div>
-      <p>
-        Updated:{" "}
-        {trainTime?.Metros?.length === 0
-          ? ""
-          : formatTime(trainTime?.LatestUpdate)}
-      </p>
-      {trainTime.length && trainTime.length < 2 ? (
-        <p>No trains</p>
+      {trainTime ? (
+        <>
+          <p>
+            Updated:{" "}
+            {trainTime?.Metros?.length === 0
+              ? ""
+              : formatTime(trainTime?.LatestUpdate)}
+          </p>
+          {trainTime.length && trainTime.length < 2 ? (
+            <p>No trains</p>
+          ) : (
+            <ul style={listStyle}>
+              {morbyCentrumTrainTimes?.map(
+                (train: TrainTime, index: number) => (
+                  <li key={index} style={listItemStyle}>
+                    <p style={headerStyle}>
+                      {train.GroupOfLine} {train.LineNumber}
+                    </p>
+                    <p style={bodyStyle}>{train.Destination}</p>
+                    <p style={bodyStyle}>{train.DisplayTime}</p>
+                    <p style={bodyStyle}>
+                      <span style={{ fontWeight: "300", color: "gray" }}>
+                        Scheduled time:
+                      </span>{" "}
+                      {formatTime(train.TimeTabledDateTime)}
+                    </p>
+                    <p style={bodyStyle}>
+                      <span style={{ fontWeight: "300", color: "gray" }}>
+                        Expected time:
+                      </span>{" "}
+                      {formatTime(train.ExpectedDateTime)}
+                    </p>
+                  </li>
+                )
+              )}
+            </ul>
+          )}
+        </>
       ) : (
-        <ul style={listStyle}>
-          {morbyCentrumTrainTimes?.map((train: TrainTime, index: number) => (
-            <li key={index} style={listItemStyle}>
-              <p style={headerStyle}>
-                {train.GroupOfLine} {train.LineNumber}
-              </p>
-              <p style={bodyStyle}>{train.Destination}</p>
-              <p style={bodyStyle}>{train.DisplayTime}</p>
-              <p style={bodyStyle}>
-                <span style={{ fontWeight: "300", color: "gray" }}>
-                  Scheduled time:
-                </span>{" "}
-                {formatTime(train.TimeTabledDateTime)}
-              </p>
-              <p style={bodyStyle}>
-                <span style={{ fontWeight: "300", color: "gray" }}>
-                  Expected time:
-                </span>{" "}
-                {formatTime(train.ExpectedDateTime)}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <p>Loading train times...</p>
       )}
     </div>
   );
