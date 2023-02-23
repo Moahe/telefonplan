@@ -10,7 +10,7 @@ interface TrainTimesResult {
 interface TrainTimes {
   Metros: TrainTime[];
   LatestUpdate: string;
-  length: number;
+  length?: number;
 }
 
 interface TrainTime {
