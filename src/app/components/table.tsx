@@ -1,11 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { startTransition, useEffect } from "react";
+import React, { useEffect } from "react";
+
+interface TrainTimesResult {
+  trainTimes: TrainTimes;
+}
 
 interface TrainTimes {
-  trainTimes: TrainTime[];
-  length?: number;
+  Metros: TrainTime[];
+  LatestUpdate: string;
+  length: number;
 }
 
 interface TrainTime {
@@ -28,6 +33,7 @@ interface TrainTime {
 function formatTime(timeString: string) {
   const date = new Date(timeString);
   const formattedTime = date.toLocaleTimeString("sv-SE", {
+    timeZone: "Europe/Stockholm",
     hour12: false,
     hour: "numeric",
     minute: "numeric",
@@ -36,21 +42,19 @@ function formatTime(timeString: string) {
   return formattedTime;
 }
 
-export default function TrainTimes(trainTimes: TrainTimes) {
+export default function TrainTimes(trainTimes: TrainTimesResult) {
   const router = useRouter();
-  const [trainTime, setTrainTime] = React.useState<TrainTime[]>(
+  const [trainTime, setTrainTime] = React.useState<TrainTimes>(
     trainTimes.trainTimes
   );
-  const morbyCentrumTrainTimes = trainTime.filter(
+  const morbyCentrumTrainTimes = trainTime?.Metros.filter(
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
-  const currentTime = new Date().toUTCString();
 
   useEffect(() => {
     if (trainTimes.trainTimes.length === 0) {
       return;
     }
-
     setTrainTime(trainTimes.trainTimes);
   }, [trainTimes]);
 
@@ -59,15 +63,21 @@ export default function TrainTimes(trainTimes: TrainTimes) {
       router.refresh();
     }, 30000);
     return () => clearInterval(interval);
-  }, [router]);
+  }, []);
 
   return (
     <div>
-      {trainTimes.length && trainTimes.length < 2 ? (
+      <p>
+        Updated:{" "}
+        {trainTime?.Metros?.length === 0
+          ? ""
+          : formatTime(trainTime?.LatestUpdate)}
+      </p>
+      {trainTime.length && trainTime.length < 2 ? (
         <p>No trains</p>
       ) : (
         <ul style={listStyle}>
-          {morbyCentrumTrainTimes?.map((train, index) => (
+          {morbyCentrumTrainTimes?.map((train: TrainTime, index: number) => (
             <li key={index} style={listItemStyle}>
               <p style={headerStyle}>
                 {train.GroupOfLine} {train.LineNumber}

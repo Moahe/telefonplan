@@ -6,18 +6,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 const apiKey = process.env.SL_API_KEY;
 
-function formatTime(timeString: string) {
-  const date = new Date(timeString);
-  const formattedTime = date.toLocaleTimeString("sv-SE", {
-    timeZone: "Europe/Stockholm",
-    hour12: false,
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
-  return formattedTime;
-}
-
 export default async function Home() {
   const currentTime = new Date().toUTCString();
   const callAPI = () => {
@@ -47,13 +35,18 @@ export default async function Home() {
     <main className={styles.main}>
       <div className={styles.description}>
         <h1>Train Times</h1>
-        <p>
+        {/* <p>
           Updated:{" "}
           {trainTimes.Metros.length === 0
-            ? formatTime(currentTime)
+            ? ""
             : formatTime(trainTimes.LatestUpdate)}
-        </p>
-        <TrainTimes trainTimes={trainTimes.Metros} />
+        </p> */}
+        <TrainTimes
+          trainTimes={{
+            LatestUpdate: trainTimes.LatestUpdate,
+            Metros: trainTimes.Metros,
+          }}
+        />
       </div>
     </main>
   );
