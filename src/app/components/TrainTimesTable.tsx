@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 // Define the audio file you want to play
-const audioFile = "/song.mp3";
+//const audioFile = "/song.mp3";
 
 // Define a new Audio object to play the sound
-const audio = new Audio(audioFile);
+//const audio = new Audio(audioFile);
+
+const audio = "";
 
 interface TrainTimesResult {
   trainTimes: TrainTimes;
@@ -73,11 +75,11 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   // Define a function to play the sound when a list item is clicked
   const handleClick = () => {
     if (playSong) {
-      audio.pause();
+      audio?.pause();
       setPlaySong(false);
     } else {
       setPlaySong(true);
-      audio.play();
+      audio?.play();
     }
   };
 
