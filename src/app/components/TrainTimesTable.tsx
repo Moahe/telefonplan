@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 // Define the audio file you want to play
-const audioFile = "./song.mp3";
+const audioFile = "/song.mp3";
 
 // Define a new Audio object to play the sound
 const audio = new Audio(audioFile);
