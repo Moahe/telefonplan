@@ -3,14 +3,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
-// Define the audio file you want to play
-const audioFile = "https://telefonplan.vercel.app/song1.mp3";
-
-//import audioFile from "../../../public/song1.mp3";
-
-// Define a new Audio object to play the sound
-//const audio = "";
-
 interface TrainTimesResult {
   trainTimes: TrainTimes;
 }
@@ -62,7 +54,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   useEffect(() => {
     audio.current =
-      typeof Audio !== undefined ? new Audio("/music/song1.mp3") : undefined;
+      typeof Audio !== undefined ? new Audio("/music/song.mp3") : undefined;
   }, []);
 
   useEffect(() => {
@@ -92,9 +84,6 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   return (
     <div>
-      <audio src="/music/song1.mp3" controls autoPlay={playSong}>
-        The file
-      </audio>
       {trainTime?.Metros.length ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
