@@ -58,16 +58,19 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   }, []);
 
   useEffect(() => {
-    if (trainTimes.length === 0) {
+    if (trainTimes.Metros?.length === 0) {
       return;
     }
     setTrainTime(trainTimes);
   }, [trainTimes]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      router.refresh();
-    }, 40000);
+    const interval = setInterval(
+      () => {
+        router.refresh();
+      },
+      trainTime.Metros?.length === 0 ? 10000 : 40000
+    );
     return () => clearInterval(interval);
   }, []);
 
