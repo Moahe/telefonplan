@@ -7,7 +7,6 @@ const inter = Inter({ subsets: ["latin"] });
 const apiKey = process.env.SL_API_KEY;
 
 export default async function Home() {
-  const currentTime = new Date().toUTCString();
   const callAPI = () => {
     if (apiKey) {
       return fetch(
@@ -36,12 +35,10 @@ export default async function Home() {
       (trainTime) => trainTime.JourneyDirection === 1
     ) ?? [];
 
-  //console.log("northBoundTrainTimes", northBoundTrainTimes);
-
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <h1>Next train to {northBoundTrainTimes[0]?.Destination}</h1>
+        <h1>Next train to Mörby centrum</h1>
         <TrainTimesTable
           trainTimes={{
             LatestUpdate: trainTimes?.LatestUpdate,
