@@ -1,6 +1,7 @@
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
-import TrainTimesTable, { TrainTimes } from "./components/TrainTimesTable";
+import TrainTimesTable from "./components/TrainTimesTable";
+import { TrainTimes } from "./components/itraintime";
 
 const inter = Inter({ subsets: ["latin"] });
 
