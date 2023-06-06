@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Client and Server Components Example
+
+This is an example project built by [https://github.com/Moahe](https://github.com/Moahe) showcasing the usage of client and server components with Next.js. It is deployed with Vercel and can be accessed at [https://telefonplan.vercel.app/](https://telefonplan.vercel.app/).
+
+This project was bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
