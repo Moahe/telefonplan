@@ -2,7 +2,11 @@
 
 This is an example project built by [https://github.com/Moahe](https://github.com/Moahe) showcasing the usage of client and server components with Next.js. It is deployed with Vercel and can be accessed at [https://telefonplan.vercel.app/](https://telefonplan.vercel.app/).
 
-This project was bootstrapped with [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+To run this project locally you need an API key from [https://www.trafiklab.se/](https://www.trafiklab.se/). Create a `.env.local` file in the root of the project and add the following line:
+
+```
+SL_API_KEY=your-api-key
+```
 
 ## Getting Started
 
