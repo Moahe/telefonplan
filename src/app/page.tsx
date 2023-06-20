@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 const apiKey = process.env.SL_API_KEY;
 
 export default async function Home() {
+  const isServer = () => typeof window === `undefined`;
   const callAPI = () => {
     if (apiKey) {
       return fetch(
@@ -21,7 +22,7 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          //console.log("RESPONSE", data.ResponseData);
+          console.log("RESPONSE", data.ResponseData);
           return data.ResponseData;
         })
         .catch((error) => {

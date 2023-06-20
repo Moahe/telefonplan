@@ -23,6 +23,19 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
 
+  const dateLessThan10Minutes = (date: Date | string) => {
+    var date = new Date(date);
+    var now = new Date();
+    var timeDifference = now.getTime() - date.getTime();
+    if (timeDifference < 600000) {
+      console.log("The date is less than 10 minutes old.");
+      return true;
+    } else {
+      console.log("The date is older than 10 minutes.");
+      return false;
+    }
+  };
+
   const audio = useRef<HTMLAudioElement | undefined>();
 
   useEffect(() => {
@@ -34,7 +47,9 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     if (trainTimes.Metros?.length === 0) {
       return;
     }
-    setTrainTime(trainTimes);
+    if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime)) {
+      setTrainTime(trainTimes);
+    }
   }, [trainTimes]);
 
   useEffect(() => {
@@ -42,7 +57,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       () => {
         router.refresh();
       },
-      trainTime.Metros?.length === 0 ? 10000 : 50000
+      trainTime.Metros?.length === 0 ? 5000 : 5000
     );
     return () => clearInterval(interval);
   }, []);
