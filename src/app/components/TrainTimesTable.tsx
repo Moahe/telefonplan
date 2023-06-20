@@ -52,7 +52,12 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       setTrainTime(trainTimes);
     } else {
       console.log("REFRESHING");
-      router.refresh();
+      setInterval(
+        () => {
+          router.refresh();
+        },
+        trainTime.Metros?.length === 0 ? 5000 : 5000
+      );
     }
   }, [trainTimes]);
 
