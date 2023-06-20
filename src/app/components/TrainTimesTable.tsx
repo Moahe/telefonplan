@@ -24,6 +24,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   );
 
   const dateLessThan10Minutes = (date: Date | string) => {
+    // @ts-expect-error
     var date = new Date(date);
     var now = new Date();
     var timeDifference = now.getTime() - date.getTime();
@@ -47,8 +48,11 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     if (trainTimes.Metros?.length === 0) {
       return;
     }
-    if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime)) {
+    if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "")) {
       setTrainTime(trainTimes);
+    } else {
+      console.log("REFRESHING");
+      router.refresh();
     }
   }, [trainTimes]);
 
