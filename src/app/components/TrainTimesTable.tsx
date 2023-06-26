@@ -61,15 +61,15 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     }
   }, [trainTimes]);
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        router.refresh();
-      },
-      trainTime.Metros?.length === 0 ? 5000 : 5000
-    );
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(
+  //     () => {
+  //       router.refresh();
+  //     },
+  //     trainTime.Metros?.length === 0 ? 5000 : 5000
+  //   );
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const handleClick = () => {
     if (playSong) {
