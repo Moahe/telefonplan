@@ -29,7 +29,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     var now = new Date();
     var timeDifference = now.getTime() - date.getTime();
     if (timeDifference < 600000) {
-      console.log("The date is less than 10 minutes old.");
+      console.log("The date is less than 10 minutes old.", trainTimes);
       return true;
     } else {
       console.log("The date is older than 10 minutes.");
