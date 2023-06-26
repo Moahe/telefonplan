@@ -94,9 +94,9 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
             Updated:{" "}
-            {trainTime?.Metros?.length === 0
+            {/* {trainTime?.Metros?.length === 0
               ? ""
-              : formatTime(trainTime?.LatestUpdate ?? "")}
+              : formatTime(trainTime?.LatestUpdate ?? "")} */}
           </p>
           <ul style={listStyle}>
             {morbyCentrumTrainTimes?.map((train: TrainTime, index: number) => (
