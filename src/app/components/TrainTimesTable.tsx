@@ -17,7 +17,6 @@ function formatTime(timeString: string) {
 
 export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   const onServer = typeof window === `undefined`;
-  console.log("ON SERVER", onServer);
 
   const [playSong, setPlaySong] = useState(false);
   const router = useRouter();
@@ -51,21 +50,27 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   }, []);
 
   useEffect(() => {
-    if (trainTimes.Metros?.length === 0) {
-      console.log("NO TRAINS", trainTimes);
-      return;
-    }
-    if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "")) {
+    console.log(
+      "REFRESHING",
+      trainTime.Metros?.length,
+      trainTimes.LatestUpdate
+    );
+
+    if (trainTimes) {
       setTrainTime(trainTimes);
     }
-    console.log("REFRESHING1");
-    setInterval(
-      () => {
-        router.refresh();
-      },
-      trainTime.Metros?.length === 0 ? 8000 : 50000
-    );
-  }, [trainTimes]);
+
+    const refreshTrainTime = () => {
+      router.refresh();
+
+      setTrainTime(trainTimes);
+    };
+
+    const delay = trainTime.Metros?.length === 0 ? 5000 : 8000;
+    const interval = setInterval(refreshTrainTime, delay);
+
+    return () => clearInterval(interval);
+  }, [trainTimes, router]);
 
   // useEffect(() => {
   //   const interval = setInterval(
@@ -96,14 +101,11 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   return (
     <div>
-      {trainTime?.Metros.length &&
-      dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "") ? (
+      {trainTimes.Metros && trainTimes.Metros.length ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
-            Updated1:{" "}
-            {/* {trainTime?.Metros?.length === 0
-              ? ""
-              : formatTime(trainTime?.LatestUpdate ?? "")} */}
+            Updated:{" "}
+            {trainTime?.LatestUpdate ? formatTime(trainTime.LatestUpdate) : ""}
           </p>
           <ul style={listStyle}>
             {morbyCentrumTrainTimes?.map((train: TrainTime, index: number) => (

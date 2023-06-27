@@ -13,7 +13,7 @@ export default async function Home() {
     if (apiKey) {
       return fetch(
         `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9263&timewindow=50&key=${apiKey}`,
-        { next: { revalidate: 600 } }
+        { next: { revalidate: 60 } }
       )
         .then((response) => {
           if (!response.ok) {
@@ -22,7 +22,7 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          console.log("RESPONSE", data.ResponseData);
+          console.log("RESPONSE", data.ResponseData.LatestUpdate);
           return data.ResponseData;
         })
         .catch((error) => {
