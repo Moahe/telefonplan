@@ -1,5 +1,6 @@
 export interface TrainTimesResult {
   trainTimes: TrainTimes;
+  trainTimesSouth: TrainTimes;
 }
 
 export interface TrainTimes {

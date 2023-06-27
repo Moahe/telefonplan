@@ -15,8 +15,17 @@ function formatTime(timeString: string) {
   return formattedTime;
 }
 
-export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
+export default function TrainTimesTable({
+  trainTimes,
+  trainTimesSouth,
+}: TrainTimesResult) {
   const onServer = typeof window === `undefined`;
+
+  const [isTrainTimesVisible, setIsTrainTimesVisible] = useState(false);
+
+  const toggleTrainTimes = () => {
+    setIsTrainTimesVisible((prevState) => !prevState);
+  };
 
   const [playSong, setPlaySong] = useState(false);
   const router = useRouter();
@@ -24,6 +33,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   const morbyCentrumTrainTimes = trainTime?.Metros.filter(
     (trainTime) => trainTime.Destination === "Mörby centrum"
   );
+  const telefonplanTrainTimes = trainTimesSouth?.Metros;
 
   const dateLessThan10Minutes = (date: Date | string) => {
     if (!onServer) {
@@ -56,14 +66,15 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       trainTimes.LatestUpdate
     );
 
-    if (trainTimes) {
-      setTrainTime(trainTimes);
-    }
+    console.log("trainTimes", telefonplanTrainTimes);
 
     const refreshTrainTime = () => {
       router.refresh();
-
-      setTrainTime(trainTimes);
+      if (isTrainTimesVisible) {
+        setTrainTime(trainTimesSouth);
+      } else {
+        setTrainTime(trainTimes);
+      }
     };
 
     const delay = trainTime.Metros?.length === 0 ? 5000 : 8000;
@@ -101,6 +112,30 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   return (
     <div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          marginBottom: "10px",
+        }}
+        onClick={toggleTrainTimes}
+      >
+        <h1>
+          Next train{" "}
+          {isTrainTimesVisible ? "Tc to Telefonplan" : "to Mörby centrum"}
+        </h1>
+        <span
+          style={{
+            display: "inline-block",
+            transform: isTrainTimesVisible ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.3s ease",
+            marginLeft: "10px",
+          }}
+        >
+          &#9660;
+        </span>
+      </div>
       {trainTimes.Metros && trainTimes.Metros.length ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
@@ -108,7 +143,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
             {trainTime?.LatestUpdate ? formatTime(trainTime.LatestUpdate) : ""}
           </p>
           <ul style={listStyle}>
-            {morbyCentrumTrainTimes?.map((train: TrainTime, index: number) => (
+            {trainTime?.Metros?.map((train: TrainTime, index: number) => (
               <li key={index} style={listItemStyle} onClick={handleClick}>
                 <div
                   style={{
