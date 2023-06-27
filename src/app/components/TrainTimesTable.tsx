@@ -52,7 +52,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
     if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "")) {
       setTrainTime(trainTimes);
     }
-    console.log("REFRESHING");
+    console.log("REFRESHING1");
     setInterval(
       () => {
         router.refresh();
