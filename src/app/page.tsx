@@ -13,7 +13,7 @@ export default async function Home() {
     if (apiKey) {
       return fetch(
         `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9263&timewindow=50&key=${apiKey}`,
-        { next: { revalidate: 60 } }
+        { next: { revalidate: 600 } }
       )
         .then((response) => {
           if (!response.ok) {

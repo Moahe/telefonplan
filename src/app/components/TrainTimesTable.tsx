@@ -57,7 +57,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       () => {
         router.refresh();
       },
-      trainTime.Metros?.length === 0 ? 5000 : 5000
+      trainTime.Metros?.length === 0 ? 8000 : 50000
     );
   }, [trainTimes]);
 
