@@ -96,7 +96,8 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   return (
     <div>
-      {trainTime?.Metros.length ? (
+      {trainTime?.Metros.length &&
+      dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "") ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
             Updated1:{" "}
