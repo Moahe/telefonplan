@@ -93,7 +93,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       {trainTime?.Metros.length ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
-            Updated:{" "}
+            Updated1:{" "}
             {/* {trainTime?.Metros?.length === 0
               ? ""
               : formatTime(trainTime?.LatestUpdate ?? "")} */}
