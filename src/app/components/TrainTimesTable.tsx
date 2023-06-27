@@ -32,7 +32,7 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
       console.log("The date is less than 10 minutes old.", trainTimes);
       return true;
     } else {
-      console.log("The date is older than 10 minutes.");
+      console.log("The date is older than 10 minutes.", trainTimes);
       return false;
     }
   };
@@ -46,19 +46,19 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
 
   useEffect(() => {
     if (trainTimes.Metros?.length === 0) {
+      console.log("NO TRAINS", trainTimes);
       return;
     }
     if (dateLessThan10Minutes(trainTime.Metros[0]?.ExpectedDateTime ?? "")) {
       setTrainTime(trainTimes);
-    } else {
-      console.log("REFRESHING");
-      setInterval(
-        () => {
-          router.refresh();
-        },
-        trainTime.Metros?.length === 0 ? 5000 : 5000
-      );
     }
+    console.log("REFRESHING");
+    setInterval(
+      () => {
+        router.refresh();
+      },
+      trainTime.Metros?.length === 0 ? 5000 : 5000
+    );
   }, [trainTimes]);
 
   // useEffect(() => {
