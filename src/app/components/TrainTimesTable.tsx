@@ -77,7 +77,7 @@ export default function TrainTimesTable({
       }
     };
 
-    const delay = trainTime.Metros?.length === 0 ? 5000 : 8000;
+    const delay = trainTime.Metros?.length === 0 ? 5200 : 8200;
     const interval = setInterval(refreshTrainTime, delay);
 
     return () => clearInterval(interval);

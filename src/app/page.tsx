@@ -12,7 +12,7 @@ export default async function Home() {
     if (apiKey) {
       return fetch(
         `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9001&timewindow=50&key=${apiKey}`,
-        { next: { revalidate: 80 } }
+        { next: { revalidate: 180 } }
       )
         .then((response) => {
           if (!response.ok) {
@@ -34,7 +34,7 @@ export default async function Home() {
     if (apiKey) {
       return fetch(
         `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9263&timewindow=50&key=${apiKey}`,
-        { next: { revalidate: 60 } }
+        { next: { revalidate: 160 } }
       )
         .then((response) => {
           if (!response.ok) {
