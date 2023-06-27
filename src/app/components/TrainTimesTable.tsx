@@ -16,6 +16,9 @@ function formatTime(timeString: string) {
 }
 
 export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
+  const onServer = typeof window === `undefined`;
+  console.log("ON SERVER", onServer);
+
   const [playSong, setPlaySong] = useState(false);
   const router = useRouter();
   const [trainTime, setTrainTime] = useState(trainTimes);
@@ -24,17 +27,20 @@ export default function TrainTimesTable({ trainTimes }: TrainTimesResult) {
   );
 
   const dateLessThan10Minutes = (date: Date | string) => {
-    // @ts-expect-error
-    var date = new Date(date);
-    var now = new Date();
-    var timeDifference = now.getTime() - date.getTime();
-    if (timeDifference < 600000) {
-      console.log("The date is less than 10 minutes old.", trainTimes);
-      return true;
-    } else {
-      console.log("The date is older than 10 minutes.", trainTimes);
-      return false;
+    if (!onServer) {
+      // @ts-expect-error
+      var date = new Date(date);
+      var now = new Date();
+      var timeDifference = now.getTime() - date.getTime();
+      if (timeDifference < 600000) {
+        console.log("The date is less than 10 minutes old.", trainTimes);
+        return true;
+      } else {
+        console.log("The date is older than 10 minutes.", trainTimes);
+        return false;
+      }
     }
+    return false;
   };
 
   const audio = useRef<HTMLAudioElement | undefined>();
