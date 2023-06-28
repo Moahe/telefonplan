@@ -78,11 +78,6 @@ export default function TrainTimesTable({
   }, []);
 
   useEffect(() => {
-    console.log(
-      "REFRESHING",
-      clientTrainTime.Metros?.length,
-      trainTimes.LatestUpdate
-    );
     const refreshTrainTime = () => {
       router.refresh();
     };
@@ -91,7 +86,7 @@ export default function TrainTimesTable({
     const interval = setInterval(refreshTrainTime, delay);
 
     return () => clearInterval(interval);
-  }, [clientTrainTime]);
+  }, [trainTimes]);
 
   const handleClick = () => {
     if (playSong) {
