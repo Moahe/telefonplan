@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { TrainTimesResult, TrainTime } from "./itraintime";
+import SoundPlayer from "./SoundPlayer";
 
 function formatTime(timeString: string) {
   const date = new Date(timeString);
@@ -27,12 +28,8 @@ export default function TrainTimesTable({
     setIsTrainTimesVisible((prevState) => !prevState);
   };
 
-  const [playSong, setPlaySong] = useState(false);
   const router = useRouter();
   const [clientTrainTime, setTrainTime] = useState(trainTimes);
-  const morbyCentrumTrainTimes = clientTrainTime?.Metros.filter(
-    (clientTrainTime) => clientTrainTime.Destination === "Mörby centrum"
-  );
 
   const dateLessThan10Minutes = (date: Date | string) => {
     if (!onServer && date) {
@@ -50,8 +47,6 @@ export default function TrainTimesTable({
     }
     return false;
   };
-
-  const audio = useRef<HTMLAudioElement | undefined>();
 
   useEffect(() => {
     if (trainTimes.Metros?.length) {
@@ -73,30 +68,13 @@ export default function TrainTimesTable({
   }, [isTrainTimesVisible]);
 
   useEffect(() => {
-    audio.current =
-      typeof Audio !== undefined ? new Audio("/music/song1.mp3") : undefined;
-  }, []);
-
-  useEffect(() => {
     const refreshTrainTime = () => {
       router.refresh();
     };
-
     const delay = 8200;
     const interval = setInterval(refreshTrainTime, delay);
-
     return () => clearInterval(interval);
   }, [trainTimes]);
-
-  const handleClick = () => {
-    if (playSong) {
-      audio.current?.pause();
-      setPlaySong(false);
-    } else {
-      setPlaySong(true);
-      audio.current?.play();
-    }
-  };
 
   const checkIfTrainIsLate = (train: TrainTime) => {
     const expectedTime = new Date(train.ExpectedDateTime);
@@ -139,59 +117,68 @@ export default function TrainTimesTable({
               ? formatTime(clientTrainTime.LatestUpdate)
               : ""}
           </p>
-          <ul style={listStyle}>
-            {clientTrainTime?.Metros?.map((train: TrainTime, index: number) => (
-              <li key={index} style={listItemStyle} onClick={handleClick}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    backgroundColor: "rgba(20, 20, 20, 0.5)",
-                  }}
-                >
-                  <p style={headerStyle}>
-                    {train.LineNumber + " " + train.Destination}
-                  </p>
-                  <p style={headerStyle}>{}</p>
-                </div>
-                <div
-                  style={{
-                    fontWeight: "300",
-                    color: "gray",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ width: "150px", paddingLeft: "5px" }}>
-                    Scheduled time:
-                  </span>
-                  <p style={bodyStyle}>
-                    {formatTime(train.TimeTabledDateTime)}
-                  </p>
-                </div>
-                <div
-                  style={{
-                    fontWeight: "300",
-                    color: "gray",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ width: "150px", paddingLeft: "5px" }}>
-                    Expected time:
-                  </span>{" "}
-                  <p
-                    style={{
-                      ...bodyStyle,
-                      color: checkIfTrainIsLate(train) ? "orange" : "white",
-                    }}
-                  >
-                    {formatTime(train.ExpectedDateTime)}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <SoundPlayer audioFile="/music/song1.mp3">
+            <ul style={listStyle}>
+              {clientTrainTime?.Metros?.map(
+                (train: TrainTime, index: number) => (
+                  <>
+                    <li key={index} style={listItemStyle}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          backgroundColor: "rgba(20, 20, 20, 0.5)",
+                        }}
+                      >
+                        <p style={headerStyle}>
+                          {train.LineNumber + " " + train.Destination}
+                        </p>
+                        <p style={headerStyle}>{}</p>
+                      </div>
+                      <div
+                        style={{
+                          fontWeight: "300",
+                          color: "gray",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span style={{ width: "150px", paddingLeft: "5px" }}>
+                          Scheduled time:
+                        </span>
+
+                        <p style={bodyStyle}>
+                          {formatTime(train.TimeTabledDateTime)}
+                        </p>
+                      </div>
+                      <div
+                        style={{
+                          fontWeight: "300",
+                          color: "gray",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span style={{ width: "150px", paddingLeft: "5px" }}>
+                          Expected time:
+                        </span>{" "}
+                        <p
+                          style={{
+                            ...bodyStyle,
+                            color: checkIfTrainIsLate(train)
+                              ? "orange"
+                              : "white",
+                          }}
+                        >
+                          {formatTime(train.ExpectedDateTime)}
+                        </p>
+                      </div>
+                    </li>
+                  </>
+                )
+              )}
+            </ul>
+          </SoundPlayer>
         </>
       ) : (
         <p>Loading train times...</p>
