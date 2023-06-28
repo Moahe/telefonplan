@@ -29,14 +29,13 @@ export default function TrainTimesTable({
 
   const [playSong, setPlaySong] = useState(false);
   const router = useRouter();
-  const [trainTime, setTrainTime] = useState(trainTimes);
-  const morbyCentrumTrainTimes = trainTime?.Metros.filter(
-    (trainTime) => trainTime.Destination === "Mörby centrum"
+  const [clientTrainTime, setTrainTime] = useState(trainTimes);
+  const morbyCentrumTrainTimes = clientTrainTime?.Metros.filter(
+    (clientTrainTime) => clientTrainTime.Destination === "Mörby centrum"
   );
-  const telefonplanTrainTimes = trainTimesSouth?.Metros;
 
   const dateLessThan10Minutes = (date: Date | string) => {
-    if (!onServer) {
+    if (!onServer && date) {
       // @ts-expect-error
       var date = new Date(date);
       var now = new Date();
@@ -55,6 +54,17 @@ export default function TrainTimesTable({
   const audio = useRef<HTMLAudioElement | undefined>();
 
   useEffect(() => {
+    if (trainTimes.Metros?.length) {
+      if (dateLessThan10Minutes(trainTimes?.LatestUpdate ?? "")) {
+        console.log("The date is less than 10 minutes old.", trainTimes);
+        setTrainTime(isTrainTimesVisible ? trainTimesSouth : trainTimes);
+      } else {
+        console.log("The date is older than 10 minutes.", trainTimes);
+      }
+    }
+  }, [trainTimes]);
+
+  useEffect(() => {
     if (isTrainTimesVisible) {
       setTrainTime(trainTimesSouth);
     } else {
@@ -70,31 +80,18 @@ export default function TrainTimesTable({
   useEffect(() => {
     console.log(
       "REFRESHING",
-      trainTime.Metros?.length,
+      clientTrainTime.Metros?.length,
       trainTimes.LatestUpdate
     );
-
-    console.log("trainTimes", telefonplanTrainTimes);
-
     const refreshTrainTime = () => {
       router.refresh();
     };
 
-    const delay = trainTime.Metros?.length === 0 ? 5200 : 8200;
+    const delay = 8200;
     const interval = setInterval(refreshTrainTime, delay);
 
     return () => clearInterval(interval);
-  }, [trainTimes, router]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(
-  //     () => {
-  //       router.refresh();
-  //     },
-  //     trainTime.Metros?.length === 0 ? 5000 : 5000
-  //   );
-  //   return () => clearInterval(interval);
-  // }, []);
+  }, [clientTrainTime]);
 
   const handleClick = () => {
     if (playSong) {
@@ -143,10 +140,12 @@ export default function TrainTimesTable({
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
             Updated:{" "}
-            {trainTime?.LatestUpdate ? formatTime(trainTime.LatestUpdate) : ""}
+            {clientTrainTime?.LatestUpdate
+              ? formatTime(clientTrainTime.LatestUpdate)
+              : ""}
           </p>
           <ul style={listStyle}>
-            {trainTime?.Metros?.map((train: TrainTime, index: number) => (
+            {clientTrainTime?.Metros?.map((train: TrainTime, index: number) => (
               <li key={index} style={listItemStyle} onClick={handleClick}>
                 <div
                   style={{
