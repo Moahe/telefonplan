@@ -55,6 +55,14 @@ export default function TrainTimesTable({
   const audio = useRef<HTMLAudioElement | undefined>();
 
   useEffect(() => {
+    if (isTrainTimesVisible) {
+      setTrainTime(trainTimesSouth);
+    } else {
+      setTrainTime(trainTimes);
+    }
+  }, [isTrainTimesVisible]);
+
+  useEffect(() => {
     audio.current =
       typeof Audio !== undefined ? new Audio("/music/song1.mp3") : undefined;
   }, []);
@@ -70,11 +78,6 @@ export default function TrainTimesTable({
 
     const refreshTrainTime = () => {
       router.refresh();
-      if (isTrainTimesVisible) {
-        setTrainTime(trainTimesSouth);
-      } else {
-        setTrainTime(trainTimes);
-      }
     };
 
     const delay = trainTime.Metros?.length === 0 ? 5200 : 8200;
