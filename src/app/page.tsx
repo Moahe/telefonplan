@@ -21,7 +21,7 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          console.log("RESPONSE1", data?.ResponseData?.LatestUpdate);
+          console.log("RESPONSE1", data?.ResponseData.Metros);
           return data.ResponseData;
         })
         .catch((error) => {
@@ -43,7 +43,9 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          console.log("RESPONSE", data?.ResponseData?.LatestUpdate);
+          if (data?.ResponseData.Metros.length === 0) {
+            return data;
+          }
           return data.ResponseData;
         })
         .catch((error) => {
@@ -53,11 +55,13 @@ export default async function Home() {
   };
   const trainTimes = await callAPI();
   const southTrainTimes = await callAPISouth();
-
+  const errorCode = "" + trainTimes?.StatusCode + ": " + trainTimes?.Message;
   const northBoundTrainTimes =
-    trainTimes?.Metros.filter(
+    trainTimes?.Metros?.filter(
       (trainTime) => trainTime.JourneyDirection === 1
     ) ?? [];
+
+  console.log("NORTH", errorCode);
 
   const southBoundTrainTimes =
     southTrainTimes?.Metros.filter(
@@ -78,6 +82,7 @@ export default async function Home() {
             LatestUpdate: southTrainTimes?.LatestUpdate,
             Metros: southBoundTrainTimes ?? [],
           }}
+          error={errorCode}
         />
       </div>
     </main>

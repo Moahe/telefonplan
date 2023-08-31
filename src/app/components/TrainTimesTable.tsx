@@ -19,6 +19,7 @@ function formatTime(timeString: string) {
 export default function TrainTimesTable({
   trainTimes,
   trainTimesSouth,
+  error,
 }: TrainTimesResult) {
   const onServer = typeof window === `undefined`;
 
@@ -71,7 +72,7 @@ export default function TrainTimesTable({
     const refreshTrainTime = () => {
       router.refresh();
     };
-    const delay = 8200;
+    const delay = 10200;
     const interval = setInterval(refreshTrainTime, delay);
     return () => clearInterval(interval);
   }, [trainTimes]);
@@ -180,8 +181,10 @@ export default function TrainTimesTable({
             </ul>
           </SoundPlayer>
         </>
+      ) : error ? (
+        <p>{error}</p>
       ) : (
-        <p>Loading train times...</p>
+        <p>Loading train times... {clientTrainTime?.Metros?.length}</p>
       )}
     </div>
   );
