@@ -42,7 +42,7 @@ export default async function Home() {
           }
           return response.json();
         })
-        .then((data: { ResponseData: TrainTimes }) => {
+        .then((data: any) => {
           if (data?.ResponseData.Metros.length === 0) {
             return data;
           }
@@ -58,10 +58,8 @@ export default async function Home() {
   const errorCode = "" + trainTimes?.StatusCode + ": " + trainTimes?.Message;
   const northBoundTrainTimes =
     trainTimes?.Metros?.filter(
-      (trainTime) => trainTime.JourneyDirection === 1
+      (trainTime: any) => trainTime.JourneyDirection === 1
     ) ?? [];
-
-  console.log("NORTH", errorCode);
 
   const southBoundTrainTimes =
     southTrainTimes?.Metros.filter(
