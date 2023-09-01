@@ -2,6 +2,8 @@ import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import TrainTimesTable from "./components/TrainTimesTable";
 import { TrainTimes } from "./components/itraintime";
+import { Router, useRouter } from "next/router";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,8 +13,7 @@ export default async function Home() {
   const callAPISouth = () => {
     if (apiKey) {
       return fetch(
-        `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9001&timewindow=50&key=${apiKey}`,
-        { next: { revalidate: 180 } }
+        `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=9001&timewindow=50&key=${apiKey}`
       )
         .then((response) => {
           if (!response.ok) {
@@ -21,7 +22,7 @@ export default async function Home() {
           return response.json();
         })
         .then((data: { ResponseData: TrainTimes }) => {
-          console.log("RESPONSE1", data?.ResponseData.Metros);
+          console.log("RESPONSE1", data);
           return data.ResponseData;
         })
         .catch((error) => {
@@ -82,6 +83,9 @@ export default async function Home() {
           }}
           error={errorCode}
         />
+        <Link href="/test">
+          <button className={styles.description}>Click here!</button>
+        </Link>
       </div>
     </main>
   );

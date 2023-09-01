@@ -4,6 +4,18 @@ export interface TrainTimesResult {
   error: string;
 }
 
+export interface ReseBotTrainTimesResult {
+  trainTimes: ReseBotTrainTimes[];
+  trainTimesSouth: ReseBotTrainTimes[];
+  error: string;
+}
+
+export interface ReseBotTrainTimes {
+  name: string;
+  direction: string;
+  time: string;
+}
+
 export interface TrainTimes {
   Metros: TrainTime[];
   LatestUpdate?: string;
