@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 const apiKey = process.env.SL_API_KEY;
 
-async function fetchSLData(siteId) {
+async function fetchSLData(siteId: number) {
   const apiKey = process.env.SL_API_KEY;
 
   if (apiKey) {
