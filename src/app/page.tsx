@@ -15,7 +15,7 @@ async function fetchSLData(siteId: number) {
   if (apiKey) {
     return fetch(
       `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=${siteId}&timewindow=50&key=${apiKey}`,
-      { next: { revalidate: 360 } }
+      { cache: "no-store" }
     )
       .then((response) => {
         if (!response.ok) {
@@ -73,7 +73,7 @@ export default async function FlyWithUsPage({
           <button className={styles.description}>Click here!</button>
         </Link>
       </div>
-      HEJHOPP
+      HEJ RASMUS
     </main>
   );
 }
