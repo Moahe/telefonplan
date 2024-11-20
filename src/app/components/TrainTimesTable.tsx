@@ -80,8 +80,8 @@ export default function TrainTimesTable({
   }, [trainTimes]);
 
   const checkIfTrainIsLate = (train: TrainTime) => {
-    const expectedTime = new Date(train.ExpectedDateTime);
-    const timeTabledTime = new Date(train.TimeTabledDateTime);
+    const expectedTime = new Date(train.expected);
+    const timeTabledTime = new Date(train.scheduled);
     const diff = expectedTime.getTime() - timeTabledTime.getTime();
     return diff > 0 ? diff / 1000 : 0;
   };
