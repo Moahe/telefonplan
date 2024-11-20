@@ -25,7 +25,7 @@ async function fetchSLData(siteId: number) {
         // if (data?.ResponseData.length === 0) {
         //   return data;
         // }
-        console.log("RESPONSE1", new Date().toLocaleDateString());
+        //console.log("RESPONSE1", new Date().toL);
         return data?.departures;
       })
       .catch((error) => {
