@@ -32,6 +32,8 @@ export default function TrainTimesTable({
   const router = useRouter();
   const [clientTrainTime, setTrainTime] = useState(trainTimes);
 
+  console.log("clientTrainTime", clientTrainTime, trainTimes.Metros);
+
   const dateLessThan10Minutes = (date: Date | string) => {
     if (!onServer && date) {
       // @ts-expect-error
@@ -51,12 +53,12 @@ export default function TrainTimesTable({
 
   useEffect(() => {
     if (trainTimes.Metros?.length) {
-      if (dateLessThan10Minutes(trainTimes?.LatestUpdate ?? "")) {
-        console.log("The date is less than 10 minutes old.", trainTimes);
-        setTrainTime(isTrainTimesVisible ? trainTimesSouth : trainTimes);
-      } else {
-        console.log("The date is older than 10 minutes.", trainTimes);
-      }
+      // if (dateLessThan10Minutes(trainTimes?.LatestUpdate ?? "")) {
+      //   console.log("The date is less than 10 minutes old.", trainTimes);
+      setTrainTime(isTrainTimesVisible ? trainTimesSouth : trainTimes);
+      // } else {
+      //   console.log("The date is older than 10 minutes.", trainTimes);
+      // }
     }
   }, [trainTimes]);
 
@@ -110,7 +112,7 @@ export default function TrainTimesTable({
           &#9660;
         </span>
       </div>
-      {trainTimes.Metros && trainTimes.Metros.length ? (
+      {trainTimes?.Metros ? (
         <>
           <p style={{ padding: "10px 0", color: "grey" }}>
             Updated:{" "}
@@ -132,7 +134,7 @@ export default function TrainTimesTable({
                         }}
                       >
                         <p style={headerStyle}>
-                          {train.LineNumber + " " + train.Destination}
+                          {train.line.id + " " + train.destination}
                         </p>
                         <p style={headerStyle}>{}</p>
                       </div>
@@ -148,9 +150,7 @@ export default function TrainTimesTable({
                           Scheduled time:
                         </span>
 
-                        <p style={bodyStyle}>
-                          {formatTime(train.TimeTabledDateTime)}
-                        </p>
+                        <p style={bodyStyle}>{formatTime(train.scheduled)}</p>
                       </div>
                       <div
                         style={{
@@ -171,7 +171,7 @@ export default function TrainTimesTable({
                               : "white",
                           }}
                         >
-                          {formatTime(train.ExpectedDateTime)}
+                          {formatTime(train.expected)}
                         </p>
                       </div>
                     </li>

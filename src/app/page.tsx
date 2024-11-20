@@ -7,14 +7,12 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const apiKey = process.env.SL_API_KEY;
-
 async function fetchSLData(siteId: number) {
   const apiKey = process.env.SL_API_KEY;
 
   if (apiKey) {
     return fetch(
-      `https://api.sl.se/api2/realtimedeparturesV4.json?siteid=${siteId}&timewindow=50&key=${apiKey}`,
+      `https://transport.integration.sl.se/v1/sites/${siteId}/departures?transport=METRO&forecast=60`, //`https://api.sl.se/api2/realtimedeparturesV4.json?siteid=${siteId}&timewindow=50&key=${apiKey}`,
       { cache: "no-store" }
     )
       .then((response) => {
@@ -24,10 +22,11 @@ async function fetchSLData(siteId: number) {
         return response.json();
       })
       .then((data: any) => {
-        if (data?.ResponseData.Metros.length === 0) {
-          return data;
-        }
-        return data.ResponseData;
+        // if (data?.ResponseData.length === 0) {
+        //   return data;
+        // }
+        console.log("RESPONSE1", new Date().toLocaleDateString());
+        return data?.departures;
       })
       .catch((error) => {
         console.log("Error fetching data:", error.message);
@@ -44,15 +43,14 @@ export default async function FlyWithUsPage({
   const southTrainTimes = await fetchSLData(9001);
   const errorCode = "" + trainTimes?.StatusCode + ": " + trainTimes?.Message;
   const northBoundTrainTimes =
-    trainTimes?.Metros?.filter(
-      (trainTime: any) => trainTime.JourneyDirection === 1
-    ) ?? [];
+    trainTimes?.filter((trainTime: any) => trainTime.direction_code === 1) ??
+    [];
 
   const southBoundTrainTimes =
-    southTrainTimes?.Metros.filter(
+    southTrainTimes?.filter(
       (trainTime: any) =>
-        trainTime.Destination === "Fruängen" ||
-        trainTime.Destination === "Telefonplan"
+        trainTime.destination === "Fruängen" ||
+        trainTime.destination === "Telefonplan"
     ) ?? [];
 
   return (
